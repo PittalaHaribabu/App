@@ -1,0 +1,889 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NewsTube - Live News</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0f0f0f;
+            color: white;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        header {
+            height: 70px;
+            background: #181818;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 30px;
+
+            border-bottom: 1px solid #303030;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #ff0000;
+        }
+
+
+        .search-box {
+            width: 40%;
+            display: flex;
+        }
+
+        .search-box input {
+            width: 100%;
+
+            background: #121212;
+            border: 1px solid #444;
+
+            padding: 12px 18px;
+
+            color: white;
+
+            border-radius: 25px 0 0 25px;
+
+            outline: none;
+        }
+
+        .search-box button {
+
+            width: 55px;
+
+            background: #303030;
+            border: none;
+
+            color: white;
+
+            border-radius: 0 25px 25px 0;
+
+            cursor: pointer;
+        }
+
+
+        .profile {
+            font-size: 24px;
+        }
+
+
+        /* ================= NAVIGATION ================= */
+
+        .category-bar {
+
+            background: #181818;
+
+            padding: 15px 30px;
+
+            display: flex;
+
+            gap: 12px;
+
+            overflow-x: auto;
+        }
+
+
+        .category {
+
+            background: #272727;
+
+            color: white;
+
+            border: none;
+
+            padding: 9px 18px;
+
+            border-radius: 20px;
+
+            white-space: nowrap;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        .category:hover,
+        .category.active {
+
+            background: white;
+
+            color: black;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .container {
+
+            width: 94%;
+
+            max-width: 1600px;
+
+            margin: 25px auto;
+        }
+
+
+        .title {
+
+            margin-bottom: 25px;
+        }
+
+
+        .title h1 {
+
+            font-size: 28px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .title p {
+
+            color: #aaa;
+        }
+
+
+        /* ================= VIDEO GRID ================= */
+
+        .video-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 25px 18px;
+        }
+
+
+        /* ================= VIDEO CARD ================= */
+
+        .video-card {
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        .video-card:hover {
+
+            transform: translateY(-4px);
+        }
+
+
+        .thumbnail {
+
+            position: relative;
+
+            width: 100%;
+
+            aspect-ratio: 16 / 9;
+
+            background: black;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+
+        .thumbnail iframe {
+
+            width: 100%;
+
+            height: 100%;
+
+            border: none;
+        }
+
+
+        /* LIVE LABEL */
+
+        .live {
+
+            position: absolute;
+
+            top: 10px;
+
+            left: 10px;
+
+            background: #ff0000;
+
+            color: white;
+
+            padding: 5px 9px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            border-radius: 4px;
+
+            z-index: 5;
+        }
+
+
+        /* VIDEO INFORMATION */
+
+        .video-info {
+
+            display: flex;
+
+            gap: 12px;
+
+            padding-top: 12px;
+        }
+
+
+        .channel-logo {
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 50%;
+
+            background: #ff0000;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: bold;
+
+            flex-shrink: 0;
+        }
+
+
+        .video-text h3 {
+
+            font-size: 16px;
+
+            line-height: 1.4;
+
+            margin-bottom: 6px;
+        }
+
+
+        .video-text p {
+
+            color: #aaa;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            margin-top: 60px;
+
+            padding: 30px;
+
+            text-align: center;
+
+            border-top: 1px solid #303030;
+
+            color: #777;
+        }
+
+
+        /* ================= TABLET ================= */
+
+        @media (max-width: 1200px) {
+
+            .video-grid {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 800px) {
+
+            header {
+
+                padding: 0 15px;
+            }
+
+            .search-box {
+
+                display: none;
+            }
+
+            .video-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                gap: 20px 12px;
+            }
+
+            .container {
+
+                width: 95%;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .video-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .title h1 {
+
+                font-size: 23px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+            News<span>Tube</span>
+        </div>
+
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search news channels...">
+
+            <button onclick="searchNews()">
+                🔍
+            </button>
+
+        </div>
+
+
+        <div class="profile">
+            👤
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= CATEGORY BAR ================= -->
+
+    <div class="category-bar">
+
+        <button class="category active">
+            All
+        </button>
+
+        <button class="category">
+            🔴 Live
+        </button>
+
+        <button class="category">
+            National
+        </button>
+
+        <button class="category">
+            Telangana
+        </button>
+
+        <button class="category">
+            Andhra Pradesh
+        </button>
+
+        <button class="category">
+            Politics
+        </button>
+
+        <button class="category">
+            Sports
+        </button>
+
+        <button class="category">
+            Business
+        </button>
+
+        <button class="category">
+            World
+        </button>
+
+    </div>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="container">
+
+
+        <div class="title">
+
+            <h1>
+                🔴 Live News
+            </h1>
+
+            <p>
+                Watch live news channels and latest updates
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= GRID ================= -->
+
+        <div class="video-grid" id="videoGrid">
+
+
+            <!-- CHANNEL 1 -->
+
+            <div class="video-card"
+                 data-name="TV9 Telugu">
+
+                <div class="thumbnail">
+
+                    <span class="live">
+                        LIVE
+                    </span>
+
+                    <iframe
+                        src="https://www.youtube.com/embed/II_m28Bm-iM"
+                        allowfullscreen>
+                    </iframe>
+
+                </div>
+
+
+                <div class="video-info">
+
+                    <div class="channel-logo">
+                        T9
+                    </div>
+
+                    <div class="video-text">
+
+                        <h3>
+                            TV9 Telugu Live News
+                        </h3>
+
+                        <p>
+                            TV9 Telugu
+                        </p>
+
+                        <p>
+                            🔴 Live News
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CHANNEL 2 -->
+
+            <div class="video-card"
+                 data-name="Channel 2">
+
+                <div class="thumbnail">
+
+                    <span class="live">
+                        LIVE
+                    </span>
+
+                    <iframe
+                          src="https://www.youtube.com/embed/II_m28Bm-iM"
+                        allowfullscreen>
+                    </iframe>
+
+                </div>
+
+
+                <div class="video-info">
+
+                    <div class="channel-logo">
+                        N
+                    </div>
+
+                    <div class="video-text">
+
+                        <h3>
+                            Channel 2 Live News
+                        </h3>
+
+                        <p>
+                            News Channel
+                        </p>
+
+                        <p>
+                            🔴 Live News
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CHANNEL 3 -->
+
+            <div class="video-card"
+                 data-name="Channel 3">
+
+                <div class="thumbnail">
+
+                    <span class="live">
+                        LIVE
+                    </span>
+
+                    <iframe
+                        src="https://www.youtube.com/embed/VIDEO_ID_3"
+                        allowfullscreen>
+                    </iframe>
+
+                </div>
+
+
+                <div class="video-info">
+
+                    <div class="channel-logo">
+                        A
+                    </div>
+
+                    <div class="video-text">
+
+                        <h3>
+                            Channel 3 Live News
+                        </h3>
+
+                        <p>
+                            News Channel
+                        </p>
+
+                        <p>
+                            🔴 Live News
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CHANNEL 4 -->
+
+            <div class="video-card"
+                 data-name="Channel 4">
+
+                <div class="thumbnail">
+
+                    <span class="live">
+                        LIVE
+                    </span>
+
+                    <iframe
+                        src="https://www.youtube.com/embed/VIDEO_ID_4"
+                        allowfullscreen>
+                    </iframe>
+
+                </div>
+
+
+                <div class="video-info">
+
+                    <div class="channel-logo">
+                        B
+                    </div>
+
+                    <div class="video-text">
+
+                        <h3>
+                            Channel 4 Live News
+                        </h3>
+
+                        <p>
+                            News Channel
+                        </p>
+
+                        <p>
+                            🔴 Live News
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CHANNEL 5 -->
+
+            <div class="video-card"
+                 data-name="Channel 5">
+
+                <div class="thumbnail">
+
+                    <span class="live">
+                        LIVE
+                    </span>
+
+                    <iframe
+                        src="https://www.youtube.com/embed/VIDEO_ID_5"
+                        allowfullscreen>
+                    </iframe>
+
+                </div>
+
+
+                <div class="video-info">
+
+                    <div class="channel-logo">
+                        S
+                    </div>
+
+                    <div class="video-text">
+
+                        <h3>
+                            Channel 5 Live News
+                        </h3>
+
+                        <p>
+                            News Channel
+                        </p>
+
+                        <p>
+                            🔴 Live News
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CHANNEL 6 -->
+
+            <div class="video-card"
+                 data-name="Channel 6">
+
+                <div class="thumbnail">
+
+                    <span class="live">
+                        LIVE
+                    </span>
+
+                    <iframe
+                        src="https://www.youtube.com/embed/VIDEO_ID_6"
+                        allowfullscreen>
+                    </iframe>
+
+                </div>
+
+
+                <div class="video-info">
+
+                    <div class="channel-logo">
+                        C
+                    </div>
+
+                    <div class="video-text">
+
+                        <h3>
+                            Channel 6 Live News
+                        </h3>
+
+                        <p>
+                            News Channel
+                        </p>
+
+                        <p>
+                            🔴 Live News
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        © 2026 NewsTube — Live News Portal
+
+    </footer>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        function searchNews() {
+
+            let search =
+                document.getElementById("searchInput")
+                .value
+                .toLowerCase();
+
+            let cards =
+                document.querySelectorAll(".video-card");
+
+
+            cards.forEach(function(card) {
+
+                let name =
+                    card.getAttribute("data-name")
+                    .toLowerCase();
+
+
+                if (name.includes(search)) {
+
+                    card.style.display = "block";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+
+        /* Category buttons */
+
+        const categories =
+            document.querySelectorAll(".category");
+
+
+        categories.forEach(function(button) {
+
+            button.addEventListener("click", function() {
+
+                categories.forEach(function(btn) {
+
+                    btn.classList.remove("active");
+
+                });
+
+                this.classList.add("active");
+
+            });
+
+        });
+
+    </script>
+
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+
+</html>
+
